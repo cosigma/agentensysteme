@@ -1,2 +1,0 @@
-INDEX VERSION 1.127+/home/daniel/Documents/studium/agentensysteme/workspace/.metadata/.plugins/org.eclipse.jdt.core
-709842413.index
