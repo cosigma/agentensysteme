@@ -1,0 +1,9 @@
+2016-06-06 11:31:16,973 [Worker-5] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: de.hsb:de.hsb.ants:0.0.1-SNAPSHOT @ /home/daniel/Documents/studium/agentensysteme/workspace/de.hsb.ants/pom.xml.
+2016-06-06 11:31:18,666 [Worker-5] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /de.hsb.ants/src/main/java
+2016-06-06 11:31:18,668 [Worker-5] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /de.hsb.ants/src/main/resources
+2016-06-06 11:31:18,669 [Worker-5] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /de.hsb.ants/src/test/java
+2016-06-06 11:31:18,670 [Worker-5] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /de.hsb.ants/src/test/resources
+2016-06-06 11:31:20,543 [Worker-15] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2016-06-06 11:31:20,558 [Worker-15] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2016-06-06 11:31:20,561 [Worker-15] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2016-06-06 11:31:20,562 [Worker-15] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
