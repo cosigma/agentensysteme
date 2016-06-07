@@ -1,6 +1,7 @@
 package de.hsb.ants.map;
 
 public class Point{
+	
 	public final int x;
 	public final int y;
 	
