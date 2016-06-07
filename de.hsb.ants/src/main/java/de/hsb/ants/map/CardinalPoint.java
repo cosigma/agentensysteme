@@ -2,13 +2,16 @@ package de.hsb.ants.map;
 
 public class CardinalPoint<E> extends Wrapper<E> {
 
+	protected final Point point;
+	
 	private CardinalPoint<E> north = null;
 	private CardinalPoint<E> east = null;
 	private CardinalPoint<E> south = null;
 	private CardinalPoint<E> west = null;
 	
-	public CardinalPoint(E element){
+	public CardinalPoint(E element, Point point){
 		super(element);
+		this.point = point;
 	}
 
 	public CardinalPoint<E> getNorth() {
