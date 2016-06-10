@@ -35,6 +35,12 @@ public class GameMap<E> {
 		return root.element;
 	}
 
+	/**
+	 * Returns the map element at a given position.
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	public E getElement(int x, int y) {
 		Point point = new Point(x, y);
 		CardinalPoint<E> cardinalPoint = map.get(point);
@@ -45,6 +51,12 @@ public class GameMap<E> {
 		return element;
 	}
 
+	/**
+	 * Sets the map element at the given coordinates.
+	 * @param x
+	 * @param y
+	 * @param element
+	 */
 	public void setElement(int x, int y, E element) {
 		Point point = new Point(x, y);
 		CardinalPoint<E> cardinalPoint = map.get(point);
