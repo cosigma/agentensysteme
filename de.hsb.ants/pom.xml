@@ -3,20 +3,19 @@
   <groupId>de.hsb</groupId>
   <artifactId>de.hsb.ants</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-<<<<<<< HEAD
   
-=======
->>>>>>> ceb5749881ef382e65c4b2cc783fc18e22ef4f07
+  <properties>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
+  
   <repositories>
   	<repository> 
 	  <id>tilab</id> 
 	  <url>http://jade.tilab.com/maven/</url> 
 	</repository>
   </repositories>
-<<<<<<< HEAD
-
-=======
->>>>>>> ceb5749881ef382e65c4b2cc783fc18e22ef4f07
+  
   <dependencies>
 	<dependency>  
 	    <groupId>com.tilab.jade</groupId> 
@@ -29,16 +28,6 @@
 	  <version>1.1.7</version>
 	</dependency>
 	<dependency>
-<<<<<<< HEAD
-	  <groupId>ch.qos.logback</groupId>
-	  <artifactId>logback-classic</artifactId>
-	  <version>1.1.7</version>
-	</dependency>
-	<dependency>  
-	  <groupId>com.tilab.jade</groupId> 
-	  <artifactId>jade</artifactId> 
-	  <version>4.4.0</version>  
-=======
 	    <groupId>ch.qos.logback</groupId>
 	    <artifactId>logback-classic</artifactId>
 	    <version>1.1.7</version>
@@ -52,7 +41,6 @@
 	    <groupId>org.glassfish</groupId>
 	    <artifactId>javax.json</artifactId>
 	    <version>1.0.4</version>
->>>>>>> ceb5749881ef382e65c4b2cc783fc18e22ef4f07
 	</dependency>
   </dependencies>
   

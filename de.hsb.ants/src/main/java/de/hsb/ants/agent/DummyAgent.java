@@ -7,6 +7,10 @@ import de.hsb.ants.msg.MessageUtils;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.SimpleBehaviour;
+import jade.domain.DFService;
+import jade.domain.FIPAException;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 
 public class DummyAgent extends Agent {
@@ -15,19 +19,24 @@ public class DummyAgent extends Agent {
 	
 	static final Logger LOG = LoggerFactory.getLogger(DummyAgent.class);
 	
+	static final String antWorldStr = "antWorld2016";
+	
 	@Override
 	protected void setup() {
-		LOG.info("setting begin");
-		
-		ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
-		msg.setSender(getAID());
-		msg.setLanguage("json");
-		msg.setContent(MessageUtils.getLoginMsg());
-		msg.addReceiver(new AID("antWorld2f10cbb6-537b-4f0f-bfb5-67fda17dde8e", AID.ISLOCALNAME));
-		
-		send(msg);
-		
-		LOG.info("setup complete");
+		//login
+		try {
+			AID antWorld = findServiceAID(antWorldStr, antWorldStr);
+			if(antWorld == null){
+				LOG.error("antWorld2016 service not found, deleting agent {}", getLocalName());
+				doDelete();
+				return;
+			}
+			sendLogin(antWorld);
+			LOG.info("login message sent: {}", getLocalName());
+		} catch (FIPAException e) {
+			LOG.error("login failed: {}", e.getMessage());
+			e.printStackTrace();
+		}
 		
 		addBehaviour(new SimpleBehaviour(this) {
 			@Override
@@ -37,14 +46,38 @@ public class DummyAgent extends Agent {
 				if(msg == null){
 					return;
 				}
-				System.out.println("message from " + msg.getSender().getLocalName());
-				System.out.println("with content " + msg.getContent());
-				System.out.println("the complete message is \n" + msg + "\n");
 			}
 			@Override
 			public boolean done() {
 				return false;
 			}
 		});
+	}
+	
+	private AID findServiceAID(String name, String type) throws FIPAException {
+		ServiceDescription filter = new ServiceDescription();
+		filter.setName(name);
+		filter.setType(type);
+		
+		DFAgentDescription dfd = new DFAgentDescription();
+		dfd.addServices(filter);
+		
+		DFAgentDescription[] results = DFService.search(this, dfd);
+		if(results == null || results.length == 0){
+			return null;
+		}
+		if(results.length > 1){
+			LOG.warn("more than once instance of service {}:{} found, defaulting to first occurrence", name, type);
+		}
+		return results[0].getName();
+	}
+	
+	private void sendLogin(AID receiver){
+		ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
+		msg.setSender(getAID());
+		msg.setLanguage("json");
+		msg.setContent(MessageUtils.getLoginMsg());
+		msg.addReceiver(receiver);
+		send(msg);
 	}
 }

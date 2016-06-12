@@ -1,4 +1,4 @@
-package de.hsb.ants.map;
+package de.hsb.ants.agent;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

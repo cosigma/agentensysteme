@@ -1,6 +1,8 @@
 package de.hsb.ants;
 
-import de.hsb.ants.map.Ant;
+import java.util.UUID;
+
+import de.hsb.ants.agent.DummyAgent;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
@@ -22,7 +24,8 @@ public class StartupTest {
 			Profile profile = new ProfileImpl(host, port, platform, main);
 			AgentContainer container = runtime.createAgentContainer(profile);
 			
-			AgentController agent = container.createNewAgent("caribbean", Ant.class.getName(), args);
+			UUID uuid = UUID.randomUUID();
+			AgentController agent = container.createNewAgent("dummyAgent" + uuid, DummyAgent.class.getName(), args);
 			agent.start();
 			
 		}catch(Exception e){
