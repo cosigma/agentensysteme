@@ -17,7 +17,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		try {
-			String host = "localhost";
+			String host = "192.168.1.233";
 			int port = -1;
 			String platform = null;
 			boolean isMain = false;
