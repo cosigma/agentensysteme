@@ -1,6 +1,5 @@
 Init-GUI (IP, Anzahl Agenten, ...)
 Agenten-GUI (...)
-Executable JAR
 Logging -> File
 
 Agenten:
