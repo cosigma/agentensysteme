@@ -4,10 +4,16 @@ import jade.core.Runtime;
 import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
 
+import java.util.UUID;
+
+import javax.swing.JOptionPane;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.hsb.ants.agent.Ant;
+import de.hsb.ants.agent.AntConfig;
+import de.hsb.ants.gui.ConfigPanel;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 
@@ -17,22 +23,28 @@ public class Main {
 
 	public static void main(String[] args) {
 		try {
-			String host = "192.168.1.233";
-			int port = -1;
-			String platform = null;
-			boolean isMain = false;
-			Runtime runtime = Runtime.instance();
-			Profile profile = new ProfileImpl(host, port, platform, isMain);
+			ConfigPanel configPanel = new ConfigPanel();
+			int configResult = JOptionPane.showConfirmDialog(null, configPanel, "Agent configuration panel",
+					JOptionPane.OK_CANCEL_OPTION);
+			if (configResult != JOptionPane.OK_OPTION) {
+				LOG.info("canceled config, shutting down");
+				return;
+			}
+			Config config = configPanel.getConfig();
 
+			Runtime runtime = Runtime.instance();
+			Profile profile = new ProfileImpl(config.getHost(), config.getPort(), null, false);
 			AgentContainer container = runtime.createAgentContainer(profile);
 
-			int numberOfAnts = 1;
+			AntConfig antConfig = new AntConfig(config);
+
+			int numberOfAnts = config.getNumberOfAnts();
 			for (int i = 0; i < numberOfAnts; ++i) {
-				String antName = "carribean" + i;
-				AgentController ant = container.createNewAgent(antName, Ant.class.getName(), args);
+				String antName = "carribean_" + UUID.randomUUID();
+				AgentController ant = container.createNewAgent(antName, Ant.class.getName(),
+						new Object[] { antConfig });
 				ant.start();
 			}
-
 		} catch (Exception e) {
 			LOG.error(e.getMessage());
 			e.printStackTrace();

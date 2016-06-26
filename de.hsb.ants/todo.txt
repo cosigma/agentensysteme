@@ -1,4 +1,3 @@
-Init-GUI (IP, Anzahl Agenten, ...)
 Agenten-GUI (...)
 Logging -> File
 

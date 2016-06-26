@@ -1,9 +1,11 @@
 package de.hsb.ants.msg;
 
+import de.hsb.ants.Color;
+
 public class AntMessage {
 
 	private String type;
-	private String color;
+	private Color color;
 	
 	public String getType() {
 		return type;
@@ -11,10 +13,10 @@ public class AntMessage {
 	public void setType(String type) {
 		this.type = type;
 	}
-	public String getColor() {
+	public Color getColor() {
 		return color;
 	}
-	public void setColor(String color) {
+	public void setColor(Color color) {
 		this.color = color;
 	}
 

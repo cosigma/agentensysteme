@@ -1,10 +1,17 @@
 package de.hsb.ants.msg;
 
+import de.hsb.ants.map.CellType;
+
+/**
+ * Instances of this class represent the "cell" element within the perception messages sent by the game service.
+ * @author Daniel
+ *
+ */
 public class CellMessage {
 
 	private int row;
 	private int col;
-	private String type;
+	private CellType type;
 	private int food;
 	private int smell;
 	private int stench;
@@ -22,10 +29,10 @@ public class CellMessage {
 	public void setCol(int col) {
 		this.col = col;
 	}
-	public String getType() {
+	public CellType getType() {
 		return type;
 	}
-	public void setType(String type) {
+	public void setType(CellType type) {
 		this.type = type;
 	}
 	public int getFood() {

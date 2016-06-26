@@ -5,7 +5,7 @@ public class Point {
 	public final int x;
 	public final int y;
 
-	Point(int x, int y) {
+	public Point(int x, int y) {
 		this.x = x;
 		this.y = y;
 	}
@@ -15,13 +15,16 @@ public class Point {
 		return x ^ y;
 	}
 
+	public boolean equals(Point other){
+		return this.x == other.x && this.y == other.y;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof Point)) {
 			return false;
 		}
-		Point other = (Point) obj;
-		return this.x == other.x && this.y == other.y;
+		return equals((Point) obj);
 	}
 
 	@Override

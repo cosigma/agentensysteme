@@ -1,5 +1,12 @@
 package de.hsb.ants.msg;
 
+import de.hsb.ants.Action;
+
+/**
+ * Instances of this class represent perception messages sent by the game service.
+ * @author Daniel
+ *
+ */
 public class PerceptionMessage {
 
 	private String name;
@@ -7,7 +14,7 @@ public class PerceptionMessage {
 	private String color;
 	private int currentFood;
 	private int totalFood;
-	private String action;
+	private Action action;
 	private CellMessage cell;
 	private String replyId;
 	
@@ -41,10 +48,10 @@ public class PerceptionMessage {
 	public void setTotalFood(int totalFood) {
 		this.totalFood = totalFood;
 	}
-	public String getAction() {
+	public Action getAction() {
 		return action;
 	}
-	public void setAction(String action) {
+	public void setAction(Action action) {
 		this.action = action;
 	}
 	public CellMessage getCell() {

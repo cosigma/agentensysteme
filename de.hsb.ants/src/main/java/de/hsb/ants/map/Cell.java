@@ -3,33 +3,35 @@ package de.hsb.ants.map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Tile {
+public class Cell {
 
-	static final Logger LOG = LoggerFactory.getLogger(Tile.class);
+	static final Logger LOG = LoggerFactory.getLogger(Cell.class);
 	
-	private TileType type = null;
-
+	private final Point position;
+	private CellType type = null;
 	private int food = 0;
 	private int smell = 0;
 	private int stench = 0;
-	
-	private final Point position;
 
-	public Tile(Point position) {
+	public Cell(Point position) {
 		this.position = position;
 	}
+	
+	public Point getPosition(){
+		return this.position;
+	}
 
-	public TileType getType() {
+	public CellType getType() {
 		if(type == null){
 			LOG.warn("accessing null-type tile at {}", position);
 		}
 		return type;
 	}
 
-	public void setType(TileType type) {
-		if(type != null && type != TileType.UNKNOWN){
-			LOG.error("present tile type is not null or unknown at position", position);
-			throw new IllegalStateException("present tile type is not null or unknown at position " + position);
+	public void setType(CellType type) {
+		if(type != null && type != CellType.UNKNOWN){
+			LOG.error("present cell type is not null or unknown at position", position);
+			throw new IllegalStateException("present cell type is not null or unknown at position " + position);
 		}
 		this.type = type;
 	}

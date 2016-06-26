@@ -6,30 +6,32 @@ import org.slf4j.LoggerFactory;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 
+import de.hsb.ants.Action;
+import de.hsb.ants.Color;
+
 public class MessageUtils {
 
 	static final Logger LOG = LoggerFactory.getLogger(MessageUtils.class);
 	
 	private static final Gson GSON = new Gson();
 
-	public static final String LOGIN, UP, DOWN, LEFT, RIGHT, COLLECT, DROP;
+	public final String LOGIN, UP, DOWN, LEFT, RIGHT, COLLECT, DROP;
 	
-	static{
-		//initialize json constants
+	public MessageUtils(Color color){
 		AntMessage msg = new AntMessage();
-		msg.setColor("ANT_COLOR_RED");
+		msg.setColor(color);
 		
-		LOGIN = asJsonWithType(msg, "ANT_ACTION_LOGIN");
-		UP = asJsonWithType(msg, "ANT_ACTION_UP");
-		DOWN = asJsonWithType(msg, "ANT_ACTION_DOWN");
-		LEFT = asJsonWithType(msg, "ANT_ACTION_LEFT");
-		RIGHT = asJsonWithType(msg, "ANT_ACTION_RIGHT");
-		COLLECT = asJsonWithType(msg, "ANT_ACTION_COLLECT");
-		DROP = asJsonWithType(msg, "ANT_ACTION_DROP");
+		LOGIN = asJsonWithType(msg, Action.ANT_ACTION_LOGIN);
+		UP = asJsonWithType(msg, Action.ANT_ACTION_UP);
+		DOWN = asJsonWithType(msg, Action.ANT_ACTION_DOWN);
+		LEFT = asJsonWithType(msg, Action.ANT_ACTION_LEFT);
+		RIGHT = asJsonWithType(msg, Action.ANT_ACTION_RIGHT);
+		COLLECT = asJsonWithType(msg, Action.ANT_ACTION_COLLECT);
+		DROP = asJsonWithType(msg, Action.ANT_ACTION_DROP);
 	}
 	
-	private static String asJsonWithType(AntMessage msg, String type){
-		msg.setType(type);
+	private static String asJsonWithType(AntMessage msg, Action action){
+		msg.setType(action.toString());
 		String json = GSON.toJson(msg, AntMessage.class);
 		return json;
 	}
