@@ -16,6 +16,9 @@ public class Point {
 	}
 
 	public boolean equals(Point other){
+		if(other == null){
+			return false;
+		}
 		return this.x == other.x && this.y == other.y;
 	}
 	

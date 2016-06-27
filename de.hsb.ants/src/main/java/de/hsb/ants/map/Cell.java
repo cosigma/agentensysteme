@@ -29,8 +29,8 @@ public class Cell {
 	}
 
 	public void setType(CellType type) {
-		if(type != null && type != CellType.UNKNOWN){
-			LOG.error("present cell type is not null or unknown at position", position);
+		if(this.type != null && this.type != CellType.UNKNOWN){
+			LOG.error("cell type at {} is {}: null or unknown expected", position, this.type);
 			throw new IllegalStateException("present cell type is not null or unknown at position " + position);
 		}
 		this.type = type;

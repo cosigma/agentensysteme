@@ -37,7 +37,6 @@ public class MessageUtils {
 	}
 	
 	public static PerceptionMessage getPerception(String json){
-		LOG.debug("trying to build perception message object from json string: {}", json);
 		try{
 			PerceptionMessage msg = GSON.fromJson(json, PerceptionMessage.class);
 			return msg;

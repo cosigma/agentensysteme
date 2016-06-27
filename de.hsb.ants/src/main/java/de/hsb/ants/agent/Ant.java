@@ -71,6 +71,11 @@ public class Ant extends Agent {
 				MessageTemplate.MatchPerformative(ACLMessage.INFORM));
 		addBehaviour(new ReceiveMessageBehaviour(mtAWInform, this::onAWInform));
 
+		// add behaviour for REFUSE from antworld
+		MessageTemplate mtAWRefuse = MessageTemplate.and(MessageTemplate.MatchSender(antWorld),
+				MessageTemplate.MatchPerformative(ACLMessage.REFUSE));
+		addBehaviour(new ReceiveMessageBehaviour(mtAWRefuse, this::onAWRefuse));
+
 		addBehaviour(new CyclicBehaviour(this) {
 			private static final long serialVersionUID = 7110665672290159055L;
 
@@ -98,77 +103,96 @@ public class Ant extends Agent {
 	private void onAWInform(ACLMessage msg) {
 		String content = msg.getContent();
 		PerceptionMessage perceptionMsg = MessageUtils.getPerception(content);
-		// TODO check perception.state == alive
-
 		CellMessage cellMsg = perceptionMsg.getCell();
-		Point nextPos = new Point(cellMsg.getRow(), cellMsg.getCol());
-		Cell nextCell = map.get(nextPos);
 
-		if (nextCell == null) {
-			nextCell = new Cell(nextPos);
-			map.put(nextPos, nextCell);
+		Point currentPos = new Point(cellMsg.getRow(), cellMsg.getCol());
+		currentCell = map.get(currentPos);
 
-			Point[] adjacents = { new Point(nextPos.x, nextPos.y - 1), new Point(nextPos.x, nextPos.y + 1),
-					new Point(nextPos.x - 1, nextPos.y), new Point(nextPos.x + 1, nextPos.y) };
-			for (Point adjacent : adjacents) {
-				if (!map.containsKey(adjacent)) {
-					Cell cell = new Cell(adjacent);
-					map.put(adjacent, cell);
-					cell.setType(CellType.UNKNOWN);
-				}
-			}
+		// on first cell or on entering unknown cell
+		if (currentCell == null || currentCell.getType() == CellType.UNKNOWN) {
+			LOG.debug("entered new cell at {}", currentPos);
+			currentCell = new Cell(currentPos);
+			map.put(currentPos, currentCell);
+			currentCell.setType(cellMsg.getType());
+			setAdjacentUnknown(currentPos);
 		}
 
-		nextCell.setFood(cellMsg.getFood());
-		nextCell.setSmell(cellMsg.getSmell());
-		nextCell.setStench(cellMsg.getStench());
-		nextCell.setType(cellMsg.getType());
+		updateCell(currentCell, cellMsg);
 
-		if (currentCell != null) {
-			Point currentPos = currentCell.getPosition();
-			if(currentPos.equals(nextPos)){
-				onMovementBlocked(perceptionMsg.getAction(), nextPos);
-			}
-		}
-
-		if (currentCell == null) {
-			currentCell = nextCell;
-		}
-
-		// TODO unify message preparation
+		// put this or something similar into a method
 		reply = msg.createReply();
 		reply.setPerformative(ACLMessage.REQUEST);
 		reply.setSender(getAID());
 	}
 
-	private void onMovementBlocked(Action action, Point position){
-		Point adjPos = null;
-		switch(action){
-		case ANT_ACTION_UP:
-			adjPos = new Point(position.x, position.y - 1);
-			break;
-		case ANT_ACTION_DOWN:
-			adjPos = new Point(position.x, position.y + 1);
-			break;
-		case ANT_ACTION_LEFT:
-			adjPos = new Point(position.x, position.y - 1);
-			break;
-		case ANT_ACTION_RIGHT:
-			adjPos = new Point(position.x, position.y + 1);
-			break;
-		default:
-			LOG.error("unexpected action: {}", action);
+	private void onAWRefuse(ACLMessage msg) {
+		String content = msg.getContent();
+		PerceptionMessage perceptionMsg = MessageUtils.getPerception(content);
+		CellMessage cellMsg = perceptionMsg.getCell();
+		
+		Point currentPos = new Point(cellMsg.getRow(), cellMsg.getCol());
+		Point oldPos = currentCell.getPosition();
+
+		updateCell(currentCell, cellMsg);
+		
+		if (!"ALIVE".equals(perceptionMsg.getState())) {
+			LOG.info("is dead at {}", currentPos);
+			doDelete();
 			return;
 		}
-		
-		Cell adjCell = map.get(adjPos);
-		if(adjCell == null){
-			adjCell = new Cell(adjPos);
-			map.put(adjPos, adjCell);
+
+		if (currentPos.equals(oldPos)) {
+			checkMovementBlocked(perceptionMsg.getAction(), currentPos);
 		}
-		adjCell.setType(CellType.BLOCKED);
 	}
-	
+
+	private void setAdjacentUnknown(Point pos) {
+		int count = 0;
+		Point[] adjacents = { new Point(pos.x, pos.y - 1), new Point(pos.x, pos.y + 1), new Point(pos.x - 1, pos.y),
+				new Point(pos.x + 1, pos.y) };
+		for (Point adjacent : adjacents) {
+			if (!map.containsKey(adjacent)) {
+				Cell cell = new Cell(adjacent);
+				map.put(adjacent, cell);
+				cell.setType(CellType.UNKNOWN);
+				++count;
+			}
+		}
+		LOG.debug("added {} unknown cell(s) around cell at {}", count, pos);
+	}
+
+	private void updateCell(Cell cell, CellMessage cellMsg) {
+		cell.setFood(cellMsg.getFood());
+		cell.setSmell(cellMsg.getSmell());
+		cell.setStench(cellMsg.getStench());
+		LOG.debug("updated cell at {}", cell.getPosition());
+	}
+
+	private void checkMovementBlocked(Action action, Point position) {
+		Point blockedPos = null;
+		switch (action) {
+		case ANT_ACTION_UP:
+			blockedPos = new Point(position.x, position.y - 1);
+			break;
+		case ANT_ACTION_DOWN:
+			blockedPos = new Point(position.x, position.y + 1);
+			break;
+		case ANT_ACTION_LEFT:
+			blockedPos = new Point(position.x, position.y - 1);
+			break;
+		case ANT_ACTION_RIGHT:
+			blockedPos = new Point(position.x, position.y + 1);
+			break;
+		default:
+			// not a movement action
+			return;
+		}
+
+		Cell blockedCell = map.get(blockedPos);
+		blockedCell.setType(CellType.BLOCKED);
+		LOG.debug("movement blocked on cell at {}", blockedPos);
+	}
+
 	private AID findServiceAID(String name, String type) {
 		try {
 			ServiceDescription filter = new ServiceDescription();
