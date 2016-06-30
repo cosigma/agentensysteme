@@ -23,23 +23,27 @@ public class ConfigPanel extends JPanel {
 	private final JTextField service = new JTextField(5);
 	private final JTextField host = new JTextField(5);
 	private final JTextField port = new JTextField(5);
-	private final JTextField antNumber = new JTextField(5);
+	private final JTextField numberOfAnts = new JTextField(5);
 	private final JComboBox<Color> color = new JComboBox<Color>(Color.values());
 	
-	public ConfigPanel(){
+	/**
+	 * Create a config panel with initial values taken from the given config.
+	 * @param init
+	 */
+	public ConfigPanel(Config init){
 		//set defaults
-		service.setText("antWorld2016");
-		host.setText("127.0.0.1");
-		port.setText("1099");
-		antNumber.setText("3");
-		color.setSelectedItem(Color.ANT_COLOR_RED);
+		service.setText(init.getService());
+		host.setText(init.getHost());
+		port.setText(String.valueOf(init.getPort()));
+		numberOfAnts.setText(String.valueOf(init.getNumberOfAnts()));
+		color.setSelectedItem(init.getColor());
 		
 		//add components
 		setLayout(new GridLayout(5, 2));
 		addWithLabel(service, "service");
 		addWithLabel(host, "host");
 		addWithLabel(port, "port");
-		addWithLabel(antNumber, "ants");
+		addWithLabel(numberOfAnts, "ants");
 		addWithLabel(color, "color");
 	}
 	
@@ -61,7 +65,7 @@ public class ConfigPanel extends JPanel {
 		Config config = new Config();
 		config.setHost(host.getText());
 		config.setPort(Integer.valueOf(port.getText()));
-		config.setNumberOfAnts(Integer.valueOf(antNumber.getText()));
+		config.setNumberOfAnts(Integer.valueOf(numberOfAnts.getText()));
 		config.setColor((Color) color.getSelectedItem());
 		return config;
 	}

@@ -7,7 +7,8 @@
     </layout>
   </appender>
   
-  <logger name="com.base22" level="TRACE"/>
+  <logger name="de.hsb.ants.map.BFSRunner" level="off"/>
+  <logger name="de.hsb.ants.agent" level="debug"/>
   
 
   <root level="debug">

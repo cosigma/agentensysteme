@@ -1,28 +1,39 @@
 package de.hsb.ants.agent;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import de.hsb.ants.Config;
-import de.hsb.ants.msg.MessageUtils;
+import de.hsb.ants.gui.AgentListener;
+import de.hsb.ants.msg.MessageUtil;
 
 /**
- * The AntConfig class represents a number of configurations for an Ant agent.
- * An instance of this class needs to be passed as an argument on agent creation when creating an Ant.
- * The same instance may be used for multiple agents.
+ * The AntConfig class represents a number of configurations for an single Ant
+ * agent. The same instance of this class should not be used with multiple
+ * agents.
+ * 
  * @author Daniel
  *
  */
 public class AntConfig {
 
+	private final MessageUtil messageUtil;
 	private String service;
-	
-	private final MessageUtils messageUtils;
-	
-	public AntConfig(Config config){
-		this.messageUtils = new MessageUtils(config.getColor());
+	private Collection<AgentListener> listener = new ArrayList<AgentListener>();
+
+	/**
+	 * Creates an AntConfig object which takes some parameters from the program config object.
+	 * @param config
+	 */
+	public AntConfig(Config config) {
+		this.messageUtil = new MessageUtil(config.getColor());
 		this.service = config.getService();
 	}
 
-	public MessageUtils getMessageUtils() {
-		return messageUtils;
+	// getters and setters...
+	
+	public MessageUtil getMessageUtil() {
+		return messageUtil;
 	}
 
 	public String getService() {
@@ -32,5 +43,13 @@ public class AntConfig {
 	public void setService(String service) {
 		this.service = service;
 	}
-	
+
+	public Collection<AgentListener> getListeners() {
+		return listener;
+	}
+
+	public void addListener(AgentListener listener) {
+		this.listener.add(listener);
+	}
+
 }

@@ -1,7 +1,6 @@
-Agenten-GUI (...)
 Logging -> File
 
 Agenten:
-Perception-Verarbeitung
 Perception-Propagation
-Logik (wohin, was machen?)
+Logik
+	performance

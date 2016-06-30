@@ -26,6 +26,11 @@ public class ReceiveMessageBehaviour extends CyclicBehaviour {
 			return;
 		}
 		onReceive.accept(msg);
+//		try{
+//			Thread.sleep(250);
+//		}catch(InterruptedException e){
+//			
+//		}
 	}
 
 }
